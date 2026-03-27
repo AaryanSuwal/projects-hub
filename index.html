@@ -1,214 +1,600 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Aaryan's Project Hub</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #0d0d0f; --surface: #131316; --surface2: #1a1a1f;
-      --border: rgba(255,255,255,0.07); --border-hover: rgba(255,255,255,0.15);
-      --accent: #00e5a0; --accent2: #7c6fff; --text: #f0f0f0;
-      --muted: #6b6b7a; --muted2: #9999aa; --danger: #ff5e5e;
-      --tag-bg: rgba(0,229,160,0.08); --tag-text: #00e5a0;
-    }
-    body { background: var(--bg); color: var(--text); font-family: 'Syne', sans-serif; min-height: 100vh; overflow-x: hidden; }
-    body::before {
-      content: ''; position: fixed; inset: 0;
-      background-image: linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
-      background-size: 40px 40px; pointer-events: none; z-index: 0;
-    }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
-    nav { padding: 20px 0; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(13,13,15,0.9); backdrop-filter: blur(12px); z-index: 100; }
-    nav .inner { display: flex; align-items: center; justify-content: space-between; }
-    .logo { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--accent); letter-spacing: 0.05em; }
-    .logo span { color: var(--muted); }
-    .nav-links { display: flex; gap: 24px; list-style: none; }
-    .nav-links a { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted2); text-decoration: none; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--accent); }
-    .hero { padding: 80px 0 60px; border-bottom: 1px solid var(--border); }
-    .hero-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
-    .hero-label::before { content: ''; width: 20px; height: 1px; background: var(--accent); display: inline-block; }
-    .hero h1 { font-size: clamp(36px, 6vw, 64px); font-weight: 800; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 20px; }
-    .hero h1 .dim { color: var(--muted); }
-    .hero h1 .accent { color: var(--accent); }
-    .hero p { font-size: 16px; color: var(--muted2); max-width: 500px; line-height: 1.7; font-family: 'JetBrains Mono', monospace; }
-    .hero-stats { display: flex; gap: 40px; margin-top: 40px; }
-    .stat { display: flex; flex-direction: column; gap: 4px; }
-    .stat-num { font-size: 28px; font-weight: 800; color: var(--text); }
-    .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
-    .filters-row { padding: 28px 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
-    .search-wrap { flex: 1; min-width: 220px; position: relative; }
-    .search-wrap input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px 10px 38px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text); outline: none; transition: border-color 0.2s; }
-    .search-wrap input::placeholder { color: var(--muted); }
-    .search-wrap input:focus { border-color: var(--accent); }
-    .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 13px; }
-    .filter-btns { display: flex; gap: 8px; flex-wrap: wrap; }
-    .filter-btn { font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 7px 14px; border-radius: 6px; border: 1px solid var(--border); background: transparent; color: var(--muted2); cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.08em; }
-    .filter-btn:hover { border-color: var(--border-hover); color: var(--text); }
-    .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #0d0d0f; }
-    .projects-section { padding: 40px 0 80px; }
-    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
-    .section-title { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; }
-    #project-count { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 16px; transition: border-color 0.25s, transform 0.25s, background 0.25s; text-decoration: none; color: inherit; position: relative; overflow: hidden; }
-    .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2)); opacity: 0; transition: opacity 0.25s; }
-    .card:hover { border-color: var(--border-hover); background: var(--surface2); transform: translateY(-3px); }
-    .card:hover::before { opacity: 1; }
-    .card-top { display: flex; align-items: flex-start; justify-content: space-between; }
-    .card-icon { width: 40px; height: 40px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; }
-    .card-status { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 4px 10px; border-radius: 20px; letter-spacing: 0.05em; }
-    .status-live { background: rgba(0,229,160,0.1); color: var(--accent); border: 1px solid rgba(0,229,160,0.2); }
-    .status-wip { background: rgba(255,190,0,0.1); color: #ffbe00; border: 1px solid rgba(255,190,0,0.2); }
-    .card-title { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; }
-    .card-desc { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted2); line-height: 1.7; flex: 1; }
-    .card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-    .tag { font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 3px 10px; border-radius: 4px; background: var(--tag-bg); color: var(--tag-text); border: 1px solid rgba(0,229,160,0.12); text-transform: uppercase; letter-spacing: 0.06em; }
-    .tag.purple { background: rgba(124,111,255,0.1); color: var(--accent2); border-color: rgba(124,111,255,0.15); }
-    .tag.red { background: rgba(255,94,94,0.1); color: var(--danger); border-color: rgba(255,94,94,0.15); }
-    .card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid var(--border); }
-    .card-date { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); }
-    .launch-btn { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); display: flex; align-items: center; gap: 5px; transition: gap 0.2s; }
-    .card:hover .launch-btn { gap: 9px; }
-    .state-msg { grid-column: 1/-1; text-align: center; padding: 60px 0; }
-    .state-msg p { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); }
-    .loader { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 12px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    footer { border-top: 1px solid var(--border); padding: 28px 0; text-align: center; }
-    footer p { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--muted); }
-    footer a { color: var(--accent); text-decoration: none; }
-    @media (max-width: 600px) { .hero-stats { gap: 24px; } .nav-links { display: none; } }
-  </style>
-</head>
-<body>
-<nav>
-  <div class="container inner">
-    <div class="logo">~/aaryan<span>/projects</span></div>
-    <ul class="nav-links">
-      <li><a href="https://www.aaryansuwal.com.np" target="_blank">portfolio</a></li>
-      <li><a href="https://github.com/AaryanSuwal" target="_blank">github</a></li>
-    </ul>
-  </div>
-</nav>
-<div class="container">
-  <section class="hero">
-    <div class="hero-label">project hub</div>
-    <h1>Things I<br/><span class="dim">actually</span> <span class="accent">built.</span></h1>
-    <p>// A curated collection of tools, apps & experiments. Click any card to launch.</p>
-    <div class="hero-stats">
-      <div class="stat"><span class="stat-num" id="total-count">—</span><span class="stat-label">projects</span></div>
-      <div class="stat"><span class="stat-num" id="live-count">—</span><span class="stat-label">live</span></div>
-      <div class="stat"><span class="stat-num">2025</span><span class="stat-label">since</span></div>
-    </div>
-  </section>
-  <div class="filters-row">
-    <div class="search-wrap">
-      <span class="search-icon">/&gt;</span>
-      <input type="text" id="search" placeholder="search projects..." />
-    </div>
-    <div class="filter-btns" id="filter-btns">
-      <button class="filter-btn active" data-filter="all">All</button>
-    </div>
-  </div>
-  <section class="projects-section">
-    <div class="section-header">
-      <span class="section-title">// projects</span>
-      <span id="project-count"></span>
-    </div>
-    <div class="grid" id="grid">
-      <div class="state-msg" id="loading">
-        <div class="loader"></div>
-        <p>// fetching projects...</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aaryan's Project Hub</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #0d0d0f;
+        --surface: #131316;
+        --surface2: #1a1a1f;
+        --border: rgba(255, 255, 255, 0.07);
+        --border-hover: rgba(255, 255, 255, 0.15);
+        --accent: #00e5a0;
+        --accent2: #7c6fff;
+        --text: #f0f0f0;
+        --muted: #6b6b7a;
+        --muted2: #9999aa;
+        --danger: #ff5e5e;
+        --tag-bg: rgba(0, 229, 160, 0.08);
+        --tag-text: #00e5a0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Syne", sans-serif;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(0, 229, 160, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0, 229, 160, 0.03) 1px, transparent 1px);
+        background-size: 40px 40px;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 0 24px;
+        position: relative;
+        z-index: 1;
+      }
+      nav {
+        padding: 20px 0;
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        background: rgba(13, 13, 15, 0.9);
+        backdrop-filter: blur(12px);
+        z-index: 100;
+      }
+      nav .inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .logo {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+        color: var(--accent);
+        letter-spacing: 0.05em;
+      }
+      .logo span {
+        color: var(--muted);
+      }
+      .nav-links {
+        display: flex;
+        gap: 24px;
+        list-style: none;
+      }
+      .nav-links a {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: var(--muted2);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--accent);
+      }
+      .hero {
+        padding: 80px 0 60px;
+        border-bottom: 1px solid var(--border);
+      }
+      .hero-label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--accent);
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .hero-label::before {
+        content: "";
+        width: 20px;
+        height: 1px;
+        background: var(--accent);
+        display: inline-block;
+      }
+      .hero h1 {
+        font-size: clamp(36px, 6vw, 64px);
+        font-weight: 800;
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        margin-bottom: 20px;
+      }
+      .hero h1 .dim {
+        color: var(--muted);
+      }
+      .hero h1 .accent {
+        color: var(--accent);
+      }
+      .hero p {
+        font-size: 16px;
+        color: var(--muted2);
+        max-width: 500px;
+        line-height: 1.7;
+        font-family: "JetBrains Mono", monospace;
+      }
+      .hero-stats {
+        display: flex;
+        gap: 40px;
+        margin-top: 40px;
+      }
+      .stat {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .stat-num {
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--text);
+      }
+      .stat-label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+      .filters-row {
+        padding: 28px 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        border-bottom: 1px solid var(--border);
+      }
+      .search-wrap {
+        flex: 1;
+        min-width: 220px;
+        position: relative;
+      }
+      .search-wrap input {
+        width: 100%;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 10px 14px 10px 38px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .search-wrap input::placeholder {
+        color: var(--muted);
+      }
+      .search-wrap input:focus {
+        border-color: var(--accent);
+      }
+      .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+      }
+      .filter-btns {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .filter-btn {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        padding: 7px 14px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--muted2);
+        cursor: pointer;
+        transition: all 0.2s;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .filter-btn:hover {
+        border-color: var(--border-hover);
+        color: var(--text);
+      }
+      .filter-btn.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #0d0d0f;
+      }
+      .projects-section {
+        padding: 40px 0 80px;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 28px;
+      }
+      .section-title {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+      #project-count {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 16px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        transition:
+          border-color 0.25s,
+          transform 0.25s,
+          background 0.25s;
+        text-decoration: none;
+        color: inherit;
+        position: relative;
+        overflow: hidden;
+      }
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        opacity: 0;
+        transition: opacity 0.25s;
+      }
+      .card:hover {
+        border-color: var(--border-hover);
+        background: var(--surface2);
+        transform: translateY(-3px);
+      }
+      .card:hover::before {
+        opacity: 1;
+      }
+      .card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+      .card-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: var(--surface2);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+      }
+      .card-status {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        letter-spacing: 0.05em;
+      }
+      .status-live {
+        background: rgba(0, 229, 160, 0.1);
+        color: var(--accent);
+        border: 1px solid rgba(0, 229, 160, 0.2);
+      }
+      .status-wip {
+        background: rgba(255, 190, 0, 0.1);
+        color: #ffbe00;
+        border: 1px solid rgba(255, 190, 0, 0.2);
+      }
+      .card-title {
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+      .card-desc {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        color: var(--muted2);
+        line-height: 1.7;
+        flex: 1;
+      }
+      .card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .tag {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        padding: 3px 10px;
+        border-radius: 4px;
+        background: var(--tag-bg);
+        color: var(--tag-text);
+        border: 1px solid rgba(0, 229, 160, 0.12);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+      .tag.purple {
+        background: rgba(124, 111, 255, 0.1);
+        color: var(--accent2);
+        border-color: rgba(124, 111, 255, 0.15);
+      }
+      .tag.red {
+        background: rgba(255, 94, 94, 0.1);
+        color: var(--danger);
+        border-color: rgba(255, 94, 94, 0.15);
+      }
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 14px;
+        border-top: 1px solid var(--border);
+      }
+      .card-date {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        color: var(--muted);
+      }
+      .launch-btn {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        transition: gap 0.2s;
+      }
+      .card:hover .launch-btn {
+        gap: 9px;
+      }
+      .state-msg {
+        grid-column: 1/-1;
+        text-align: center;
+        padding: 60px 0;
+      }
+      .state-msg p {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .loader {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--border);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin-bottom: 12px;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 28px 0;
+        text-align: center;
+      }
+      footer p {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      footer a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      @media (max-width: 600px) {
+        .hero-stats {
+          gap: 24px;
+        }
+        .nav-links {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="container inner">
+        <div class="logo">~/aaryan<span>/projects</span></div>
+        <ul class="nav-links">
+          <li>
+            <a href="https://www.aaryansuwal.com.np" target="_blank"
+              >portfolio</a
+            >
+          </li>
+          <li>
+            <a href="https://github.com/AaryanSuwal" target="_blank">github</a>
+          </li>
+        </ul>
       </div>
+    </nav>
+    <div class="container">
+      <section class="hero">
+        <div class="hero-label">project hub</div>
+        <h1>
+          Things I<br /><span class="dim">actually</span>
+          <span class="accent">built.</span>
+        </h1>
+        <p>
+          // A curated collection of tools, apps & experiments. Click any card
+          to launch.
+        </p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num" id="total-count">—</span
+            ><span class="stat-label">projects</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num" id="live-count">—</span
+            ><span class="stat-label">live</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">2025</span
+            ><span class="stat-label">since</span>
+          </div>
+        </div>
+      </section>
+      <div class="filters-row">
+        <div class="search-wrap">
+          <span class="search-icon">/&gt;</span>
+          <input type="text" id="search" placeholder="search projects..." />
+        </div>
+        <div class="filter-btns" id="filter-btns">
+          <button class="filter-btn active" data-filter="all">All</button>
+        </div>
+      </div>
+      <section class="projects-section">
+        <div class="section-header">
+          <span class="section-title">// projects</span>
+          <span id="project-count"></span>
+        </div>
+        <div class="grid" id="grid">
+          <div class="state-msg" id="loading">
+            <div class="loader"></div>
+            <p>// fetching projects...</p>
+          </div>
+        </div>
+      </section>
     </div>
-  </section>
-</div>
-<footer>
-  <div class="container">
-    <p>built by <a href="https://www.aaryansuwal.com.np">aaryan suwal</a></p>
-  </div>
-</footer>
-<script>
-  const GITHUB_USER = 'AaryanSuwal';
-  const GITHUB_REPO = 'Project-Hub';
-  const JSON_FILE   = 'projects.json';
-  const TAG_COLORS  = ['', 'purple', 'red'];
+    <footer>
+      <div class="container">
+        <p>
+          built by <a href="https://www.aaryansuwal.com.np">aaryan suwal</a>
+        </p>
+      </div>
+    </footer>
+    <script>
+      const GITHUB_USER = "AaryanSuwal";
+      const GITHUB_REPO = "projects-hub";
+      const JSON_FILE = "projects.json";
+      const TAG_COLORS = ["", "purple", "red"];
 
-  const grid      = document.getElementById('grid');
-  const searchEl  = document.getElementById('search');
-  const countEl   = document.getElementById('project-count');
-  const filterEl  = document.getElementById('filter-btns');
-  const totalEl   = document.getElementById('total-count');
-  const liveEl    = document.getElementById('live-count');
+      const grid = document.getElementById("grid");
+      const searchEl = document.getElementById("search");
+      const countEl = document.getElementById("project-count");
+      const filterEl = document.getElementById("filter-btns");
+      const totalEl = document.getElementById("total-count");
+      const liveEl = document.getElementById("live-count");
 
-  let allProjects  = [];
-  let activeFilter = 'all';
+      let allProjects = [];
+      let activeFilter = "all";
 
-  async function loadProjects() {
-    try {
-      const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${JSON_FILE}?t=${Date.now()}`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error();
-      allProjects = await res.json();
-      buildFilters();
-      renderGrid();
-    } catch {
-      grid.innerHTML = `<div class="state-msg"><p>// failed to load projects.</p></div>`;
-    }
-  }
+      async function loadProjects() {
+        try {
+          const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${JSON_FILE}?t=${Date.now()}`;
+          const res = await fetch(url);
+          if (!res.ok) throw new Error();
+          allProjects = await res.json();
+          buildFilters();
+          renderGrid();
+        } catch {
+          grid.innerHTML = `<div class="state-msg"><p>// failed to load projects.</p></div>`;
+        }
+      }
 
-  function buildFilters() {
-    const tags = [...new Set(allProjects.flatMap(p => p.tags))];
-    filterEl.innerHTML = `<button class="filter-btn active" data-filter="all">All</button>`;
-    tags.forEach(tag => {
-      const btn = document.createElement('button');
-      btn.className = 'filter-btn';
-      btn.dataset.filter = tag.toLowerCase();
-      btn.textContent = tag;
-      filterEl.appendChild(btn);
-    });
-    filterEl.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterEl.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        activeFilter = btn.dataset.filter;
-        renderGrid();
-      });
-    });
-  }
+      function buildFilters() {
+        const tags = [...new Set(allProjects.flatMap((p) => p.tags))];
+        filterEl.innerHTML = `<button class="filter-btn active" data-filter="all">All</button>`;
+        tags.forEach((tag) => {
+          const btn = document.createElement("button");
+          btn.className = "filter-btn";
+          btn.dataset.filter = tag.toLowerCase();
+          btn.textContent = tag;
+          filterEl.appendChild(btn);
+        });
+        filterEl.querySelectorAll(".filter-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            filterEl
+              .querySelectorAll(".filter-btn")
+              .forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            activeFilter = btn.dataset.filter;
+            renderGrid();
+          });
+        });
+      }
 
-  function renderGrid() {
-    const q = searchEl.value.toLowerCase();
-    const filtered = allProjects.filter(p => {
-      const matchSearch = p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q);
-      const matchFilter = activeFilter === 'all' || p.tags.map(t => t.toLowerCase()).includes(activeFilter);
-      return matchSearch && matchFilter;
-    });
-    totalEl.textContent = allProjects.length;
-    liveEl.textContent  = allProjects.filter(p => p.status === 'live').length;
-    countEl.textContent = filtered.length + ' showing';
-    if (!filtered.length) { grid.innerHTML = `<div class="state-msg"><p>// no projects match your search.</p></div>`; return; }
-    grid.innerHTML = filtered.map(p => `
+      function renderGrid() {
+        const q = searchEl.value.toLowerCase();
+        const filtered = allProjects.filter((p) => {
+          const matchSearch =
+            p.title.toLowerCase().includes(q) ||
+            p.description.toLowerCase().includes(q);
+          const matchFilter =
+            activeFilter === "all" ||
+            p.tags.map((t) => t.toLowerCase()).includes(activeFilter);
+          return matchSearch && matchFilter;
+        });
+        totalEl.textContent = allProjects.length;
+        liveEl.textContent = allProjects.filter(
+          (p) => p.status === "live",
+        ).length;
+        countEl.textContent = filtered.length + " showing";
+        if (!filtered.length) {
+          grid.innerHTML = `<div class="state-msg"><p>// no projects match your search.</p></div>`;
+          return;
+        }
+        grid.innerHTML = filtered
+          .map(
+            (p) => `
       <a class="card" href="${p.link}" target="_blank">
         <div class="card-top">
-          <div class="card-icon">${p.icon || '📁'}</div>
+          <div class="card-icon">${p.icon || "📁"}</div>
           <span class="card-status status-${p.status}">${p.status}</span>
         </div>
         <div class="card-title">${p.title}</div>
         <div class="card-desc">${p.description}</div>
-        <div class="card-tags">${p.tags.map((t,i) => `<span class="tag ${TAG_COLORS[i % TAG_COLORS.length]}">${t}</span>`).join('')}</div>
+        <div class="card-tags">${p.tags.map((t, i) => `<span class="tag ${TAG_COLORS[i % TAG_COLORS.length]}">${t}</span>`).join("")}</div>
         <div class="card-footer">
           <span class="card-date">${p.year}</span>
           <span class="launch-btn">launch →</span>
         </div>
-      </a>`).join('');
-  }
+      </a>`,
+          )
+          .join("");
+      }
 
-  searchEl.addEventListener('input', renderGrid);
-  loadProjects();
-</script>
-</body>
+      searchEl.addEventListener("input", renderGrid);
+      loadProjects();
+    </script>
+  </body>
 </html>
