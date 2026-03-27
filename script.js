@@ -15,12 +15,17 @@ let activeFilter = "all";
 
 async function loadProjects() {
   try {
-    const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${JSON_FILE}?t=${Date.now()}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error();
-    allProjects = await res.json();
+    const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/${JSON_FILE}`;
+    const res = await fetch(url, {
+      headers: { Accept: "application/vnd.github.v3+json" },
+    });
+    const data = await res.json();
+    allProjects = JSON.parse(
+      decodeURIComponent(escape(atob(data.content.replace(/\n/g, "")))),
+    );
     buildFilters();
     renderGrid();
+    return;
   } catch {
     grid.innerHTML = `<div class="state-msg"><p>// failed to load projects.</p></div>`;
   }
