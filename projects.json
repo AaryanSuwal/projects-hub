@@ -1,12 +1,1 @@
-[
-  {
-    "id": "todo-app",
-    "title": "To-Do List App",
-    "description": "A clean task manager with add, complete, and delete functionality. Built as a first-semester final project.",
-    "tags": ["JS", "CSS", "Tool"],
-    "year": "2025",
-    "status": "live",
-    "link": "https://www.aaryansuwal.com.np",
-    "icon": "✅"
-  }
-]
+[]
