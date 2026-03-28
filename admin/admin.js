@@ -12,6 +12,16 @@ let selectedStatus = "completed";
 let currentProjects = [];
 let currentSHA = "";
 
+function fixImageUrl(url) {
+  if (!url) return "";
+  return url
+    .replace("https://github.com/", "https://cdn.jsdelivr.net/gh/")
+    .replace("/blob/main/", "@main/")
+    .replace("/blob/master/", "@master/")
+    .replace("raw.githubusercontent.com/", "cdn.jsdelivr.net/gh/")
+    .replace("/main/", "@main/");
+}
+
 function initTagPicker() {
   const picker = document.getElementById("tag-picker");
   const statusPicker = document.getElementById("status-picker");
@@ -176,7 +186,6 @@ async function addProject() {
   const status = selectedStatus;
   const link = document.getElementById("f-link").value.trim();
   const liveLink = document.getElementById("f-live-link").value.trim();
-  const downloadLink = document.getElementById("f-download-link").value.trim();
   const image = document.getElementById("f-image").value.trim();
 
   if (!title || !desc || tags.length === 0 || !link || !version) {
@@ -198,7 +207,6 @@ async function addProject() {
       status,
       link,
       liveLink,
-      downloadLink,
       image,
       icon: "terminal",
     };
@@ -206,7 +214,7 @@ async function addProject() {
     await saveProjects(updated, `add project: ${title}`);
     currentProjects = updated;
     renderList();
-    ["f-title", "f-desc", "f-link", "f-live-link", "f-download-link", "f-image"].forEach(
+    ["f-title", "f-desc", "f-link", "f-live-link", "f-image"].forEach(
       (id) => (document.getElementById(id).value = ""),
     );
     document.getElementById("f-version").value = "v1.0.0";
