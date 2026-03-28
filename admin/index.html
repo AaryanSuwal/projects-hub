@@ -62,13 +62,9 @@
 
         <div class="form-title">// add new project</div>
         <div class="form-grid">
-          <div class="form-group">
+          <div class="form-group full">
             <label>Project Title *</label>
             <input type="text" id="f-title" placeholder="My Awesome App" />
-          </div>
-          <div class="form-group">
-            <label>Year *</label>
-            <input type="text" id="f-year" placeholder="2025" value="2025" />
           </div>
           <div class="form-group full">
             <label>Description *</label>
@@ -77,25 +73,31 @@
               placeholder="A short description of what this project does..."
             ></textarea>
           </div>
+          <div class="form-group full">
+            <label>Technologies *</label>
+            <div class="tag-picker" id="tag-picker">
+              <!-- tags added via js -->
+            </div>
+          </div>
           <div class="form-group">
-            <label>Tags (comma separated) *</label>
-            <input type="text" id="f-tags" placeholder="JS, CSS, Tool" />
+            <label>Version *</label>
+            <input type="text" id="f-version" placeholder="v1.0.0" value="v1.0.0" />
           </div>
           <div class="form-group">
             <label>Status *</label>
-            <select id="f-status">
-              <option value="live">Live</option>
-              <option value="wip">Work in Progress</option>
-            </select>
+            <div class="tag-picker" id="status-picker"></div>
           </div>
           <div class="form-group full">
-            <label>Project Link *</label>
-            <input type="text" id="f-link" placeholder="https://..." />
+            <label>GitHub Link *</label>
+            <input type="text" id="f-link" placeholder="https://github.com/..." />
+          </div>
+          <div class="form-group full" id="group-live-link">
+            <label>Live Project Link (Optional)</label>
+            <input type="text" id="f-live-link" placeholder="https://..." />
           </div>
           <div class="form-group full">
-            <label>Icon</label>
-            <div class="icon-picker" id="icon-picker"></div>
-            <input type="hidden" id="f-icon" value="📁" />
+            <label>Image Link (Optional)</label>
+            <input type="text" id="f-image" placeholder="https://.../image.png" />
           </div>
         </div>
         <button class="submit-btn" id="submit-btn" onclick="addProject()">
@@ -109,6 +111,7 @@
     </footer>
     <div class="toast" id="toast"></div>
 
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="../admin/admin.js"></script>
   </body>
 </html>

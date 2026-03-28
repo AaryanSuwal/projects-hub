@@ -1,28 +1,53 @@
 const GITHUB_USER = "AaryanSuwal";
 const GITHUB_REPO = "projects-hub";
 const JSON_FILE = "projects.json";
-const ICONS = [
-  "📁",
-  "✅",
-  "🛠️",
-  "🎮",
-  "📊",
-  "🌐",
-  "🔐",
-  "⚡",
-  "🤖",
-  "📱",
-  "🎨",
-  "🔧",
-  "📝",
-  "🚀",
-  "💡",
-  "🧪",
+const AVAILABLE_TAGS = [
+  "HTML", "CSS", "JS", "React", "TypeScript", 
+  "Python", "C", "C++", "Node.js", "TailwindCSS", 
+  "Next.js", "Docker", "UI/UX", "Tool"
 ];
-
-let selectedIcon = "📁";
+const STATUS_OPTIONS = ["completed", "in-progress", "archived"];
+let selectedTags = [];
+let selectedStatus = "completed";
 let currentProjects = [];
 let currentSHA = "";
+
+function initTagPicker() {
+  const picker = document.getElementById("tag-picker");
+  const statusPicker = document.getElementById("status-picker");
+  if (!picker || !statusPicker) return;
+  
+  picker.innerHTML = "";
+  AVAILABLE_TAGS.forEach(tag => {
+    const el = document.createElement("div");
+    el.className = "tag-opt";
+    el.textContent = tag;
+    el.onclick = () => {
+      el.classList.toggle("selected");
+      if (el.classList.contains("selected")) {
+        selectedTags.push(tag);
+      } else {
+        selectedTags = selectedTags.filter(t => t !== tag);
+      }
+    };
+    picker.appendChild(el);
+  });
+
+  statusPicker.innerHTML = "";
+  STATUS_OPTIONS.forEach(s => {
+    const el = document.createElement("div");
+    el.className = "tag-opt" + (s === selectedStatus ? " selected" : "");
+    el.textContent = s.replace("-", " ");
+    el.onclick = () => {
+      document.querySelectorAll("#status-picker .tag-opt").forEach(e => e.classList.remove("selected"));
+      el.classList.add("selected");
+      selectedStatus = s;
+    };
+    statusPicker.appendChild(el);
+  });
+}
+document.addEventListener("DOMContentLoaded", initTagPicker);
+setTimeout(initTagPicker, 100);
 
 // ── Token management ──────────────────────────────────
 function getToken() {
@@ -58,22 +83,6 @@ function init() {
     fetchProjects();
   }
 }
-
-// ── Icon picker ───────────────────────────────────────
-const picker = document.getElementById("icon-picker");
-ICONS.forEach((icon) => {
-  const el = document.createElement("div");
-  el.className = "icon-opt" + (icon === selectedIcon ? " selected" : "");
-  el.textContent = icon;
-  el.onclick = () => {
-    document
-      .querySelectorAll(".icon-opt")
-      .forEach((e) => e.classList.remove("selected"));
-    el.classList.add("selected");
-    selectedIcon = icon;
-  };
-  picker.appendChild(el);
-});
 
 // ── Toast ─────────────────────────────────────────────
 function showToast(msg, type = "success") {
@@ -123,10 +132,10 @@ function renderList() {
       (p, i) => `
       <div class="project-item">
         <div class="project-item-left">
-          <div class="project-item-icon">${p.icon || "📁"}</div>
+          <div class="project-item-icon"><i data-lucide="terminal"></i></div>
           <div>
             <div class="project-item-title">${p.title}</div>
-            <div class="project-item-meta">${p.tags.join(", ")} · ${p.year}</div>
+            <div class="project-item-meta">${p.tags.join(", ")}</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:10px;">
@@ -136,6 +145,10 @@ function renderList() {
       </div>`,
     )
     .join("");
+
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
 }
 
 async function saveProjects(projects, message) {
@@ -158,16 +171,14 @@ async function saveProjects(projects, message) {
 async function addProject() {
   const title = document.getElementById("f-title").value.trim();
   const desc = document.getElementById("f-desc").value.trim();
-  const tags = document
-    .getElementById("f-tags")
-    .value.split(",")
-    .map((t) => t.trim())
-    .filter(Boolean);
-  const year = document.getElementById("f-year").value.trim();
-  const status = document.getElementById("f-status").value;
+  const tags = [...selectedTags];
+  const version = document.getElementById("f-version").value.trim();
+  const status = selectedStatus;
   const link = document.getElementById("f-link").value.trim();
+  const liveLink = document.getElementById("f-live-link").value.trim();
+  const image = document.getElementById("f-image").value.trim();
 
-  if (!title || !desc || !tags.length || !link) {
+  if (!title || !desc || tags.length === 0 || !link || !version) {
     showToast("// fill in all required fields", "error");
     return;
   }
@@ -182,19 +193,24 @@ async function addProject() {
       title,
       description: desc,
       tags,
-      year,
+      version,
       status,
       link,
-      icon: selectedIcon,
+      liveLink,
+      image,
+      icon: "terminal",
     };
     const updated = [...currentProjects, newProject];
     await saveProjects(updated, `add project: ${title}`);
     currentProjects = updated;
     renderList();
-    ["f-title", "f-desc", "f-tags", "f-link"].forEach(
+    ["f-title", "f-desc", "f-link", "f-live-link", "f-image"].forEach(
       (id) => (document.getElementById(id).value = ""),
     );
-    document.getElementById("f-year").value = "2025";
+    document.getElementById("f-version").value = "v1.0.0";
+    selectedTags = [];
+    selectedStatus = "completed";
+    initTagPicker();
     showToast(`// "${title}" published ✓`, "success");
   } catch {
     showToast("// failed to publish. token may be invalid.", "error");

@@ -37,28 +37,52 @@
           // A curated collection of tools, apps & experiments. Click any card
           to launch.
         </p>
-        <div class="hero-stats">
-          <div class="stat">
-            <span class="stat-num" id="total-count">—</span
-            ><span class="stat-label">projects</span>
-          </div>
-          <div class="stat">
-            <span class="stat-num" id="live-count">—</span
-            ><span class="stat-label">live</span>
-          </div>
-          <div class="stat">
-            <span class="stat-num">2025</span
-            ><span class="stat-label">since</span>
-          </div>
-        </div>
       </section>
       <div class="filters-row">
         <div class="search-wrap">
-          <span class="search-icon">/&gt;</span>
+          <span class="search-icon"><i data-lucide="search"></i></span>
           <input type="text" id="search" placeholder="search projects..." />
         </div>
-        <div class="filter-btns" id="filter-btns">
-          <button class="filter-btn active" data-filter="all">All</button>
+        <div class="filter-dropdown-container">
+          <button class="filter-btn" id="filter-toggle-btn">
+            <i data-lucide="filter" class="filter-btn-icon"></i>
+            <span>Filter</span>
+            <span id="active-filter-indicator"></span>
+            <i data-lucide="chevron-down" class="filter-btn-chevron"></i>
+          </button>
+          <div class="filter-dropdown-menu" id="filter-dropdown-menu">
+            <div class="filter-sections-wrapper">
+              <div class="filter-section">
+                <div class="filter-section-title">Filter by Status</div>
+                <div class="filter-options" id="status-filters">
+                  <button class="filter-opt-btn" data-type="status" data-val="live">live</button>
+                  <button class="filter-opt-btn" data-type="status" data-val="wip">wip</button>
+                </div>
+              </div>
+              <div class="filter-section">
+                <div class="filter-section-title">Filter by Technology</div>
+                <div class="filter-options" id="tech-filters">
+                  <button class="filter-opt-btn" data-type="tech" data-val="HTML">HTML</button>
+                  <button class="filter-opt-btn" data-type="tech" data-val="CSS">CSS</button>
+                  <button class="filter-opt-btn" data-type="tech" data-val="JS">JS</button>
+                  <button class="filter-opt-btn" data-type="tech" data-val="React">React</button>
+                  <button class="filter-opt-btn" data-type="tech" data-val="TypeScript">TypeScript</button>
+                  <button class="filter-opt-btn" data-type="tech" data-val="Python">Python</button>
+                  <button class="filter-opt-btn" data-type="tech" data-val="C">C</button>
+                  <button class="filter-opt-btn" data-type="tech" data-val="C++">C++</button>
+                  <button class="filter-opt-btn" data-type="tech" data-val="Node.js">Node.js</button>
+                  <button class="filter-opt-btn" data-type="tech" data-val="TailwindCSS">TailwindCSS</button>
+                  <button class="filter-opt-btn" data-type="tech" data-val="Next.js">Next.js</button>
+                  <button class="filter-opt-btn" data-type="tech" data-val="Docker">Docker</button>
+                  <button class="filter-opt-btn" data-type="tech" data-val="UI/UX">UI/UX</button>
+                  <button class="filter-opt-btn" data-type="tech" data-val="Tool">Tool</button>
+                </div>
+              </div>
+            </div>
+            <div class="filter-actions">
+              <button class="clear-filters-btn" id="clear-filters-btn">Clear All</button>
+            </div>
+          </div>
         </div>
       </div>
       <section class="projects-section">
@@ -81,6 +105,7 @@
         </p>
       </div>
     </footer>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="/script.js"></script>
   </body>
 </html>

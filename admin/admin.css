@@ -371,6 +371,33 @@ select option {
   border-color: var(--accent);
   background: rgba(0, 229, 160, 0.1);
 }
+.tag-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+.tag-opt {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.tag-opt:hover {
+  border-color: var(--accent);
+  background: rgba(0, 229, 160, 0.05);
+}
+.tag-opt.selected {
+  background: rgba(0, 229, 160, 0.1);
+  border-color: var(--accent);
+  color: var(--accent);
+}
 .submit-btn {
   margin-top: 28px;
   width: 100%;
