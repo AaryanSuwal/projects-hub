@@ -95,5 +95,29 @@
     "liveLink": "dfs",
     "image": "https://worldvectorlogo.com/logo/random",
     "icon": "terminal"
+  },
+  {
+    "id": "dfdsf",
+    "title": "dfdsf",
+    "description": "DSFDSFdsfdsfdsfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffdfdfddfdfd",
+    "tags": [
+      "Docker",
+      "JS",
+      "CSS",
+      "Next.js",
+      "HTML",
+      "UI/UX",
+      "React",
+      "TypeScript",
+      "Python",
+      "C",
+      "Tool"
+    ],
+    "version": "v1.0.0",
+    "status": "completed",
+    "link": "dfsdf",
+    "liveLink": "dsfdsf",
+    "image": "https://worldvectorlogo.com/logo/random",
+    "icon": "terminal"
   }
 ]
