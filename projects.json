@@ -14,20 +14,5 @@
     "liveLink": "",
     "image": "https://github.com/AaryanSuwal/To-Do-List/blob/main/preview.png",
     "icon": "terminal"
-  },
-  {
-    "id": "fd",
-    "title": "fd",
-    "description": "dfdsf",
-    "tags": [
-      "Docker",
-      "CSS"
-    ],
-    "version": "v1.0.0",
-    "status": "completed",
-    "link": "dfdsf",
-    "liveLink": "dfs",
-    "image": "https://github.com/AaryanSuwal/To-Do-List/blob/main/preview.png",
-    "icon": "terminal"
   }
 ]
