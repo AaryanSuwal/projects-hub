@@ -1,20 +1,5 @@
 [
   {
-    "id": "sdfgh",
-    "title": "sdfgh",
-    "description": "sdfgjh",
-    "tags": [
-      "CSS",
-      "Docker"
-    ],
-    "version": "v1.0.0",
-    "status": "live",
-    "link": "sdfg",
-    "liveLink": "dsfg",
-    "image": "dsfsdg",
-    "icon": "terminal"
-  },
-  {
     "id": "hello",
     "title": "HEllo",
     "description": "hii",
