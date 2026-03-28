@@ -52,5 +52,21 @@
     "liveLink": "dsfg",
     "image": "dsfsdg",
     "icon": "terminal"
+  },
+  {
+    "id": "hello",
+    "title": "HEllo",
+    "description": "hii",
+    "tags": [
+      "HTML",
+      "Next.js",
+      "Docker"
+    ],
+    "version": "v1.0.1",
+    "status": "wip",
+    "link": "fddff",
+    "liveLink": "",
+    "image": "https://worldvectorlogo.com/logo/random",
+    "icon": "terminal"
   }
 ]
