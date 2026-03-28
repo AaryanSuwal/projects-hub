@@ -119,5 +119,21 @@
     "liveLink": "dsfdsf",
     "image": "https://worldvectorlogo.com/logo/random",
     "icon": "terminal"
+  },
+  {
+    "id": "to-do-list",
+    "title": "To-Do List",
+    "description": "123545yhgbdfv",
+    "tags": [
+      "HTML",
+      "CSS",
+      "JS"
+    ],
+    "version": "v1.0.0",
+    "status": "completed",
+    "link": "https://github.com/AaryanSuwal/To-Do-List",
+    "liveLink": "",
+    "image": "https://github.com/AaryanSuwal/To-Do-List/blob/main/preview.png",
+    "icon": "terminal"
   }
 ]
