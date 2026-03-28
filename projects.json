@@ -1,19 +1,5 @@
 [
   {
-    "id": "dsfdf",
-    "title": "dsfdf",
-    "description": "sdfsdf",
-    "tags": [
-      "JS"
-    ],
-    "version": "v1.0.0",
-    "status": "in-progress",
-    "link": "dfdsf",
-    "liveLink": "",
-    "image": "",
-    "icon": "terminal"
-  },
-  {
     "id": "to-do-list",
     "title": "To-do List",
     "description": "This is a to-do List",
