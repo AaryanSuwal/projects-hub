@@ -1,17 +1,5 @@
 [
   {
-    "id": "dfghfed",
-    "title": "dfghfed",
-    "description": "fdg",
-    "tags": [
-      "dsf"
-    ],
-    "year": "2025",
-    "status": "live",
-    "link": "dfdf",
-    "icon": "📁"
-  },
-  {
     "id": "to-do-list",
     "title": "To-Do List",
     "description": "This is a todo list.",
