@@ -10,5 +10,19 @@
     "status": "live",
     "link": "dfdf",
     "icon": "📁"
+  },
+  {
+    "id": "to-do-list",
+    "title": "To-Do List",
+    "description": "This is a todo list.",
+    "tags": [
+      "JS",
+      "CSS",
+      "HTML"
+    ],
+    "year": "2025",
+    "status": "live",
+    "link": "Hello",
+    "icon": "terminal"
   }
 ]
