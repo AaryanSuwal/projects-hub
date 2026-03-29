@@ -60,11 +60,15 @@
 
         <hr class="divider" />
 
-        <div class="form-title">// add new project</div>
+        <div class="form-title" id="form-title">// add new project</div>
         <div class="form-grid">
           <div class="form-group full">
             <label>Project Title *</label>
             <input type="text" id="f-title" placeholder="My Awesome App" />
+          </div>
+          <div class="form-group full">
+            <label>My Role (Optional)</label>
+            <input type="text" id="f-role" placeholder="e.g. Lead Developer, Designer" />
           </div>
           <div class="form-group full">
             <label>Description *</label>
@@ -100,9 +104,14 @@
             <input type="text" id="f-image" placeholder="https://.../image.png" />
           </div>
         </div>
-        <button class="submit-btn" id="submit-btn" onclick="addProject()">
-          // publish project →
-        </button>
+        <div class="form-actions">
+          <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">
+            // publish project →
+          </button>
+          <button class="cancel-edit-btn" id="cancel-edit-btn" onclick="cancelEdit()">
+            cancel
+          </button>
+        </div>
       </div>
     </div>
 

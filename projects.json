@@ -2,6 +2,7 @@
   {
     "id": "to-do-list",
     "title": "To-Do List",
+    "role": "Lead Developer",
     "description": "A clean and minimal task manager to add, complete, and delete tasks. Built with vanilla HTML, CSS, and JavaScript.",
     "tags": [
       "HTML",

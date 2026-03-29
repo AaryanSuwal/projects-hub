@@ -111,13 +111,9 @@ function renderGrid() {
       p.description.toLowerCase().includes(q);
     
     const pStatus = (p.status || "").toLowerCase();
-    let statusMatchVal = pStatus;
-    if (pStatus === "live") statusMatchVal = "completed";
-    if (pStatus === "wip") statusMatchVal = "in-progress";
 
-    const matchStatus = activeFilters.status.length === 0 || 
-                        activeFilters.status.includes(pStatus) || 
-                        activeFilters.status.includes(statusMatchVal);
+    const matchStatus = activeFilters.status.length === 0 ||
+                        activeFilters.status.includes(pStatus);
                         
     const pTags = p.tags ? p.tags.map(t => t.toLowerCase()) : [];
     const matchTech = activeFilters.tech.length === 0 || activeFilters.tech.some(t => pTags.includes(t));
@@ -143,7 +139,10 @@ function renderGrid() {
         </a>` : ''}
         <div class="card-header-row">
           <div class="card-icon"><i data-lucide="terminal"></i></div>
-          <h3 class="card-title">${p.title}</h3>
+          <div class="card-title-group">
+            <h3 class="card-title">${p.title}</h3>
+            ${p.role ? `<div class="card-role">${p.role}</div>` : ''}
+          </div>
         </div>
         ${p.image ? `<div class="card-image-wrap"><img src="${fixImageUrl(p.image)}" class="card-image" alt="${p.title}" /></div>` : ''}
         <div class="card-desc">${p.description}</div>

@@ -11,14 +11,14 @@
   --surface2: #1a1a1f;
   --border: rgba(255, 255, 255, 0.07);
   --border-hover: rgba(255, 255, 255, 0.15);
-  --accent: #00e5a0;
+  --accent: #e0a050;
   --accent2: #7c6fff;
   --text: #f0f0f0;
   --muted: #6b6b7a;
   --muted2: #9999aa;
   --danger: #ff5e5e;
-  --tag-bg: rgba(0, 229, 160, 0.08);
-  --tag-text: #00e5a0;
+  --tag-bg: rgba(224, 160, 80, 0.08);
+  --tag-text: #e0a050;
 }
 body {
   background: var(--bg);
@@ -32,8 +32,8 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0, 229, 160, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 229, 160, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(224, 160, 80, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(224, 160, 80, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
   z-index: 0;
@@ -192,7 +192,7 @@ nav .inner {
 .filter-btn:hover {
   border-color: var(--accent);
   background: var(--surface2);
-  box-shadow: 0 4px 12px rgba(0, 229, 160, 0.05);
+  box-shadow: 0 4px 12px rgba(224, 160, 80, 0.05);
 }
 .filter-btn.active {
   background: var(--accent);
@@ -301,10 +301,10 @@ nav .inner {
 }
 .filter-opt-btn:hover {
   border-color: var(--accent);
-  background: rgba(0, 229, 160, 0.05);
+  background: rgba(224, 160, 80, 0.05);
 }
 .filter-opt-btn.selected {
-  background: rgba(0, 229, 160, 0.1);
+  background: rgba(224, 160, 80, 0.1);
   border-color: var(--accent);
   color: var(--accent);
 }
@@ -437,8 +437,8 @@ nav .inner {
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
   color: var(--accent);
-  background: rgba(0, 229, 160, 0.1);
-  border: 1px solid rgba(0, 229, 160, 0.2);
+  background: rgba(224, 160, 80, 0.1);
+  border: 1px solid rgba(224, 160, 80, 0.2);
   padding: 6px 12px;
   border-radius: 20px;
   text-decoration: none;
@@ -451,8 +451,8 @@ nav .inner {
   height: 12px;
 }
 .live-preview-btn:hover {
-  background: rgba(0, 229, 160, 0.15);
-  box-shadow: 0 4px 12px rgba(0, 229, 160, 0.1);
+  background: rgba(224, 160, 80, 0.15);
+  box-shadow: 0 4px 12px rgba(224, 160, 80, 0.1);
   transform: translateY(-1px);
 }
 .card-icon {
@@ -479,25 +479,37 @@ nav .inner {
   letter-spacing: 0.05em;
 }
 .status-completed {
-  background: rgba(0, 229, 160, 0.1);
-  color: var(--accent);
-  border: 1px solid rgba(0, 229, 160, 0.2);
+  background: rgba(74, 222, 128, 0.1);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.2);
 }
 .status-in-progress {
-  background: rgba(255, 190, 0, 0.1);
-  color: #ffbe00;
-  border: 1px solid rgba(255, 190, 0, 0.2);
+  background: rgba(96, 165, 250, 0.1);
+  color: #60a5fa;
+  border: 1px solid rgba(96, 165, 250, 0.2);
 }
 .status-archived {
-  background: rgba(255, 94, 94, 0.1);
-  color: var(--danger);
-  border: 1px solid rgba(255, 94, 94, 0.2);
+  background: rgba(153, 153, 170, 0.1);
+  color: #9999aa;
+  border: 1px solid rgba(153, 153, 170, 0.2);
+}
+.card-title-group {
+  display: flex;
+  flex-direction: column;
 }
 .card-title {
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.01em;
   margin: 0;
+}
+.card-role {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--accent);
+  opacity: 0.8;
+  letter-spacing: 0.02em;
+  margin-top: 2px;
 }
 .card-desc {
   font-family: "JetBrains Mono", monospace;
@@ -521,7 +533,7 @@ nav .inner {
   border-radius: 4px;
   background: var(--tag-bg);
   color: var(--tag-text);
-  border: 1px solid rgba(0, 229, 160, 0.12);
+  border: 1px solid rgba(224, 160, 80, 0.12);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
@@ -566,15 +578,15 @@ nav .inner {
   color: #fff;
 }
 .download-btn {
-  background: rgba(0, 229, 160, 0.08);
+  background: rgba(224, 160, 80, 0.08);
   color: var(--accent);
-  border: 1px solid rgba(0, 229, 160, 0.2);
+  border: 1px solid rgba(224, 160, 80, 0.2);
 }
 .download-btn:hover {
-  background: rgba(0, 229, 160, 0.15);
+  background: rgba(224, 160, 80, 0.15);
   border-color: var(--accent);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 229, 160, 0.15);
+  box-shadow: 0 4px 12px rgba(224, 160, 80, 0.15);
 }
 .card-divider {
   height: 1px;

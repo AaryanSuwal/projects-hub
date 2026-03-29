@@ -11,6 +11,7 @@ let selectedTags = [];
 let selectedStatus = "completed";
 let currentProjects = [];
 let currentSHA = "";
+let editIndex = -1; // -1 = add mode, >=0 = edit mode
 
 function fixImageUrl(url) {
   if (!url) return "";
@@ -145,11 +146,12 @@ function renderList() {
           <div class="project-item-icon"><i data-lucide="terminal"></i></div>
           <div>
             <div class="project-item-title">${p.title}</div>
-            <div class="project-item-meta">${p.tags.join(", ")}</div>
+            <div class="project-item-meta">${p.role ? `[${p.role}] ` : ""}${p.tags.join(", ")}</div>
           </div>
         </div>
         <div style="display:flex;align-items:center;gap:10px;">
           <span class="project-item-status status-${p.status}">${p.status}</span>
+          <button class="edit-btn" onclick="editProject(${i})">edit</button>
           <button class="delete-btn" onclick="deleteProject(${i})">delete</button>
         </div>
       </div>`,
@@ -178,15 +180,103 @@ async function saveProjects(projects, message) {
   currentSHA = data.content.sha;
 }
 
+// ── Routing ──────────────────────────────────────────
+function handleSubmit() {
+  if (editIndex >= 0) updateProject();
+  else addProject();
+}
+
+// ── Edit ─────────────────────────────────────────────
+function editProject(index) {
+  const p = currentProjects[index];
+  editIndex = index;
+
+  document.getElementById("f-title").value    = p.title       || "";
+  document.getElementById("f-desc").value     = p.description || "";
+  document.getElementById("f-version").value  = p.version     || "v1.0.0";
+  document.getElementById("f-link").value     = p.link        || "";
+  document.getElementById("f-live-link").value = p.liveLink   || "";
+  document.getElementById("f-image").value    = p.image       || "";
+  document.getElementById("f-role").value     = p.role        || "";
+
+  selectedTags   = [...(p.tags || [])];
+  selectedStatus = p.status || "completed";
+  initTagPicker();
+  document.querySelectorAll("#tag-picker .tag-opt").forEach(el => {
+    if (selectedTags.includes(el.textContent)) el.classList.add("selected");
+  });
+
+  document.getElementById("form-title").textContent = `// editing: ${p.title}`;
+  document.getElementById("submit-btn").textContent  = "// save changes →";
+  document.getElementById("cancel-edit-btn").style.display = "inline-block";
+  document.getElementById("form-title").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function cancelEdit() {
+  editIndex      = -1;
+  selectedTags   = [];
+  selectedStatus = "completed";
+  initTagPicker();
+  ["f-title", "f-role", "f-desc", "f-link", "f-live-link", "f-image"].forEach(
+    id => (document.getElementById(id).value = ""),
+  );
+  document.getElementById("f-version").value                 = "v1.0.0";
+  document.getElementById("form-title").textContent           = "// add new project";
+  document.getElementById("submit-btn").textContent            = "// publish project →";
+  document.getElementById("cancel-edit-btn").style.display     = "none";
+}
+
+// ── Add ──────────────────────────────────────────────
 async function addProject() {
-  const title = document.getElementById("f-title").value.trim();
-  const desc = document.getElementById("f-desc").value.trim();
-  const tags = [...selectedTags];
-  const version = document.getElementById("f-version").value.trim();
-  const status = selectedStatus;
-  const link = document.getElementById("f-link").value.trim();
+  const title    = document.getElementById("f-title").value.trim();
+  const desc     = document.getElementById("f-desc").value.trim();
+  const tags     = [...selectedTags];
+  const version  = document.getElementById("f-version").value.trim();
+  const status   = selectedStatus;
+  const link     = document.getElementById("f-link").value.trim();
   const liveLink = document.getElementById("f-live-link").value.trim();
-  const image = document.getElementById("f-image").value.trim();
+  const image    = document.getElementById("f-image").value.trim();
+  const role     = document.getElementById("f-role").value.trim();
+
+  if (!title || !desc || tags.length === 0 || !link || !version) {
+    showToast("// fill in all required fields", "error");
+    return;
+  }
+
+  const btn = document.getElementById("submit-btn");
+  btn.disabled    = true;
+  btn.textContent = "// publishing...";
+
+  try {
+    const newProject = {
+      id: title.toLowerCase().replace(/\s+/g, "-"),
+      title, role, description: desc, tags, version, status, link, liveLink, image, icon: "terminal",
+    };
+    const updated = [...currentProjects, newProject];
+    await saveProjects(updated, `add project: ${title}`);
+    currentProjects = updated;
+    renderList();
+    cancelEdit();
+    showToast(`// "${title}" published ✓`, "success");
+  } catch {
+    showToast("// failed to publish. token may be invalid.", "error");
+  }
+
+  btn.disabled    = false;
+  btn.textContent = "// publish project →";
+}
+
+// ── Update ───────────────────────────────────────────
+async function updateProject() {
+  const title    = document.getElementById("f-title").value.trim();
+  const desc     = document.getElementById("f-desc").value.trim();
+  const tags     = [...selectedTags];
+  const version  = document.getElementById("f-version").value.trim();
+  const status   = selectedStatus;
+  const link     = document.getElementById("f-link").value.trim();
+  const liveLink = document.getElementById("f-live-link").value.trim();
+  const image    = document.getElementById("f-image").value.trim();
+  const role     = document.getElementById("f-role").value.trim();
 
   if (!title || !desc || tags.length === 0 || !link || !version) {
     showToast("// fill in all required fields", "error");
@@ -195,11 +285,12 @@ async function addProject() {
 
   const btn = document.getElementById("submit-btn");
   btn.disabled = true;
-  btn.textContent = "// publishing...";
+  btn.textContent = "// saving...";
 
   try {
-    const newProject = {
-      id: title.toLowerCase().replace(/\s+/g, "-"),
+    const original = currentProjects[editIndex];
+    const updatedProject = {
+      ...original,
       title,
       description: desc,
       tags,
@@ -208,26 +299,19 @@ async function addProject() {
       link,
       liveLink,
       image,
-      icon: "terminal",
     };
-    const updated = [...currentProjects, newProject];
-    await saveProjects(updated, `add project: ${title}`);
+    const updated = [...currentProjects];
+    updated[editIndex] = updatedProject;
+    await saveProjects(updated, `update project: ${title}`);
     currentProjects = updated;
     renderList();
-    ["f-title", "f-desc", "f-link", "f-live-link", "f-image"].forEach(
-      (id) => (document.getElementById(id).value = ""),
-    );
-    document.getElementById("f-version").value = "v1.0.0";
-    selectedTags = [];
-    selectedStatus = "completed";
-    initTagPicker();
-    showToast(`// "${title}" published ✓`, "success");
+    cancelEdit();
+    showToast(`// "${title}" updated ✓`, "success");
   } catch {
-    showToast("// failed to publish. token may be invalid.", "error");
+    showToast("// failed to save changes.", "error");
   }
 
   btn.disabled = false;
-  btn.textContent = "// publish project →";
 }
 
 async function deleteProject(index) {
