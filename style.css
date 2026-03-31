@@ -6,19 +6,19 @@
   padding: 0;
 }
 :root {
-  --bg: #0d0d0f;
-  --surface: #131316;
-  --surface2: #1a1a1f;
+  --bg: #0a0f1a;
+  --surface: #111827;
+  --surface2: #1a2332;
   --border: rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(255, 255, 255, 0.15);
-  --accent: #e0a050;
-  --accent2: #7c6fff;
-  --text: #f0f0f0;
-  --muted: #6b6b7a;
-  --muted2: #9999aa;
-  --danger: #ff5e5e;
-  --tag-bg: rgba(224, 160, 80, 0.08);
-  --tag-text: #e0a050;
+  --border-hover: rgba(255, 255, 255, 0.14);
+  --accent: #3b82f6;
+  --accent2: #60a5fa;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --muted2: #94a3b8;
+  --danger: #f87171;
+  --tag-bg: rgba(59, 130, 246, 0.1);
+  --tag-text: #3b82f6;
 }
 body {
   background: var(--bg);
@@ -32,8 +32,8 @@ body::before {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(rgba(224, 160, 80, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(224, 160, 80, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(59, 130, 246, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.02) 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
   z-index: 0;
@@ -191,13 +191,11 @@ nav .inner {
 }
 .filter-btn:hover {
   border-color: var(--accent);
-  background: var(--surface2);
-  box-shadow: 0 4px 12px rgba(224, 160, 80, 0.05);
 }
 .filter-btn.active {
   background: var(--accent);
   border-color: var(--accent);
-  color: #0d0d0f;
+  color: #fff;
 }
 .filter-btn-icon, .filter-btn-chevron {
   opacity: 0.7;
@@ -220,7 +218,7 @@ nav .inner {
 #active-filter-indicator {
   display: inline-block;
   background: var(--accent);
-  color: #0d0d0f;
+  color: #fff;
   border-radius: 50%;
   width: 18px;
   height: 18px;
@@ -301,10 +299,9 @@ nav .inner {
 }
 .filter-opt-btn:hover {
   border-color: var(--accent);
-  background: rgba(224, 160, 80, 0.05);
 }
 .filter-opt-btn.selected {
-  background: rgba(224, 160, 80, 0.1);
+  background: rgba(59, 130, 246, 0.1);
   border-color: var(--accent);
   color: var(--accent);
 }
@@ -372,33 +369,16 @@ nav .inner {
   page-break-inside: avoid;
   margin-bottom: 16px;
   gap: 16px;
-  transition: all 0.25s ease;
+  transition: border-color 0.2s, box-shadow 0.2s;
   text-decoration: none;
   color: inherit;
   position: relative;
   overflow: hidden;
   z-index: 1;
 }
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  opacity: 0;
-  transition: opacity 0.25s ease;
-  z-index: 2;
-}
 .card:hover {
   border-color: var(--border-hover);
-  background: var(--surface2);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-.card:hover::before {
-  opacity: 1;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
 .card-header-row {
   display: flex;
@@ -422,10 +402,10 @@ nav .inner {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.3s ease;
 }
 .card:hover .card-image {
-  transform: scale(1.05);
+  transform: scale(1.03);
 }
 .live-preview-btn {
   position: absolute;
@@ -437,12 +417,12 @@ nav .inner {
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
   color: var(--accent);
-  background: rgba(224, 160, 80, 0.1);
-  border: 1px solid rgba(224, 160, 80, 0.2);
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
   padding: 6px 12px;
   border-radius: 20px;
   text-decoration: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s;
   z-index: 10;
   font-weight: 500;
 }
@@ -451,9 +431,8 @@ nav .inner {
   height: 12px;
 }
 .live-preview-btn:hover {
-  background: rgba(224, 160, 80, 0.15);
-  box-shadow: 0 4px 12px rgba(224, 160, 80, 0.1);
-  transform: translateY(-1px);
+  background: rgba(59, 130, 246, 0.15);
+  border-color: var(--accent);
 }
 .card-icon {
   width: 46px;
@@ -466,10 +445,6 @@ nav .inner {
   justify-content: center;
   font-size: 20px;
   flex-shrink: 0;
-  transition: border-color 0.25s ease;
-}
-.card:hover .card-icon {
-  border-color: var(--border-hover);
 }
 .card-status {
   font-family: "JetBrains Mono", monospace;
@@ -507,7 +482,7 @@ nav .inner {
   font-family: "JetBrains Mono", monospace;
   font-size: 11px;
   color: var(--accent);
-  opacity: 0.8;
+  opacity: 0.85;
   letter-spacing: 0.02em;
   margin-top: 2px;
 }
@@ -533,19 +508,19 @@ nav .inner {
   border-radius: 4px;
   background: var(--tag-bg);
   color: var(--tag-text);
-  border: 1px solid rgba(224, 160, 80, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.15);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
 .tag.purple {
-  background: rgba(124, 111, 255, 0.1);
+  background: rgba(96, 165, 250, 0.1);
   color: var(--accent2);
-  border-color: rgba(124, 111, 255, 0.15);
+  border-color: rgba(96, 165, 250, 0.2);
 }
 .tag.red {
-  background: rgba(255, 94, 94, 0.1);
+  background: rgba(248, 113, 113, 0.1);
   color: var(--danger);
-  border-color: rgba(255, 94, 94, 0.15);
+  border-color: rgba(248, 113, 113, 0.2);
 }
 .card-actions {
   display: flex;
@@ -564,7 +539,7 @@ nav .inner {
   padding: 10px 0;
   border-radius: 8px;
   text-decoration: none;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: border-color 0.2s, color 0.2s;
 }
 .github-btn {
   background: var(--surface2);
@@ -572,30 +547,34 @@ nav .inner {
   border: 1px solid var(--border);
 }
 .github-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
   border-color: var(--border-hover);
-  transform: translateY(-2px);
-  color: #fff;
+  color: var(--text);
 }
 .download-btn {
-  background: rgba(224, 160, 80, 0.08);
-  color: var(--accent);
-  border: 1px solid rgba(224, 160, 80, 0.2);
+  background: rgba(96, 165, 250, 0.06);
+  color: var(--accent2);
+  border: 1px solid rgba(96, 165, 250, 0.15);
 }
 .download-btn:hover {
-  background: rgba(224, 160, 80, 0.15);
-  border-color: var(--accent);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(224, 160, 80, 0.15);
+  border-color: var(--accent2);
 }
 .card-divider {
   height: 1px;
   background: var(--border);
   margin: 6px 0;
-  transition: background 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
-.card:hover .card-divider {
-  background: linear-gradient(90deg, transparent, var(--border-hover), transparent);
+.card-divider::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.card:hover .card-divider::after {
+  opacity: 1;
 }
 .card-footer {
   display: flex;
